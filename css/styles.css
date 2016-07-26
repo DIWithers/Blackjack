@@ -1,9 +1,28 @@
+body {
+	background-color: #898A8F;
+}
+
 .the-table {
-	background-color: green;
+	background: linear-gradient(#4E041B, #78102B);
+	/* background-color: green; */
 	border: 5px solid #663300;
-	border-radius: 10px;
+	border-radius: 0 0 50% 50%;
 	margin-top: 30px;
 	padding: 30px 0px;
+	height: 650px;
+	width:75%;
+	transform: rotateX(30deg);
+}
+.table-border {
+	/* background: #a56913;
+	/* background-color: green; */
+	border: 5px solid #663300;
+	border-radius: 0 0 50% 50%;
+	margin-top: 30px;
+	padding: 30px 0px;
+	height: 700px;
+	width:100%;
+	transform: rotateX(30deg); */
 }
 .card {
 	height: 120px;
@@ -11,11 +30,17 @@
 	color: black;
 	margin: 10px;
 	width: 13%;
+	transform: rotateX(30deg);
+	padding: 0;
+	border-radius: 5px;
 }
 .dealer-total-wrapper, .player-total-wrapper {
 	color: white;
 	font-size: 18px;
 	text-align: center;
+}
+.dealer-hand-wrapper {
+	margin-bottom: 15%;
 }
 
 .dealer-total-number, .player-total-number {
@@ -30,4 +55,11 @@
 	background: black;
 	color: white;
 	border-radius: 3px;
+	margin-left: -60%;
+	text-align: center;
+	padding: 5%;
+}
+img {
+	width: 100%;
+
 }

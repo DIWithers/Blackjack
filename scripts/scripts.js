@@ -1,3 +1,15 @@
+//game over messages - *check*
+//change table
+//11,12, 13? - *pics fix it*
+//aces?
+//player can play forever *check*
+//win counter and bet system?
+//need a deck to draw from
+//cards could be red/black - find imgs for cards -- *check*
+//put delay on showing cards
+// you can see the dealer's second card on deal
+
+
 // 1. When the user clicks deal, deal.
 var theDeck = [];
 var playersHand = [];
@@ -7,6 +19,7 @@ var topOfTheDeck = 4;
 $(document).ready(function(){
 
 	$(".deal-button").click(function(){
+		clearTable();
 		createDeck(); //Run a function that creates an array of 1h - 13c
 		shuffleDeck();
 
@@ -37,20 +50,24 @@ $(document).ready(function(){
 		else if (playersHand.length === 5) { slotForNewCard = "six"; } //styled for brevity
 		placeCard("player", slotForNewCard, theDeck[topOfTheDeck]);
 		playersHand.push(theDeck[topOfTheDeck]);
-		calculateTotal(playersHand, "player");
+		playerTotal = calculateTotal(playersHand, "player");
 		topOfTheDeck++;
+		if (playerTotal > 21) {
+			checkWin();
+		}
 
 	});
 
 	$(".stand-button").click(function(){
 		//Player clicked on stand. Nothing happens to player
+
 		var dealerTotal = calculateTotal(dealersHand, "dealer");
 		while (dealerTotal < 17) {
 			if (dealersHand.length === 2) { slotForNewCard = "three"; }
 		else if (dealersHand.length === 3) { slotForNewCard = "four"; }
 		else if (dealersHand.length === 4) { slotForNewCard = "five"; }
 		else if (dealersHand.length === 5) { slotForNewCard = "six"; }
-		placeCard("dealer, slotForNewCard, theDeck[topOfTheDeck]");
+		placeCard("dealer", slotForNewCard, theDeck[topOfTheDeck]);
 		dealersHand.push(theDeck[topOfTheDeck]);
 		dealerTotal = calculateTotal(dealersHand, "dealer");
 		topOfTheDeck++;
@@ -64,12 +81,44 @@ $(document).ready(function(){
 
 });
 function checkWin() {
-	alert("Game over.");
+	// alert("Game over.");
+	// Get player and dealer totals
+	var playerTotal = calculateTotal(playersHand, "dealer");
+	var dealerTotal = calculateTotal(dealersHand, "dealer");
+	if (playerTotal === 21) {
+		alert("BLACKJACK!!! Player wins!");
+	}
+	else if (dealerTotal === 21) {
+		alert("The house always wins in the end...");
+	}
+	else if (playerTotal > 21) {
+		alert("Sorry, you busted...");
+
+	}
+	else if (dealerTotal > 21) {
+		alert("Dealer busts! Player wins!")
+		}
+	else {
+		if (playerTotal > dealerTotal) {
+			alert("Player wins!");
+		}
+		else if (dealerTotal > playerTotal) {
+			alert("Sorry, dealer wins!");
+		}
+		else {
+			alert("Looks like we have a tie. Try again.")
+		}
+	}
 }
+
+
 function placeCard(who, where, cardToPlace) {
 	var classSelector = "." + who + "-cards .card-" + where;
 
-	$(classSelector).html(cardToPlace);
+	$(classSelector).html('<img src="images/' + cardToPlace + '.png">');
+	// $(classSelector).html('<img src="images/ace-hearts.png">');
+
+
 	}
 
 function calculateTotal(hand, whosTurn) {
@@ -107,6 +156,7 @@ function createDeck() {
 			theDeck.push(c + suits[s]);
 		}
 	}
+
 }
 
 function shuffleDeck() {
@@ -118,5 +168,18 @@ function shuffleDeck() {
 		theDeck[card2] = temp;
 		
 	}
+}
+function clearTable() {
+
+	var theDeck = [];
+	playersHand = [];
+	dealersHand = [];
+	topOfTheDeck = 4;
+	
+	var cardsToClear = document.getElementsByTagName("img");
+	for (var i = 0; i < cardsToClear.length; i++) {
+		cardsToClear[i].remove();
+	}
+	
 }
 
