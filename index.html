@@ -9,6 +9,8 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript" src="scripts/scripts.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://cdn.rawgit.com/nnattawat/flip/master/dist/jquery.flip.min.js"></script>
 
 </head>
 <body>
@@ -26,23 +28,34 @@
 6. Make a deal, hit, and stand button.
  -->
 <div class="container">
+<div id="background">
+<div id="floor"></div>
+<div id="baseboard"></div>
+<div id="baseboardTop"></div>
+</div>
 	<div class="row">
+
 		<div class="the-table col-sm-8 col-sm-offset-2">
+		<div class="table-lip"></div>
 			<!-- Dealer Row -->
 			<div class="row">
+
 				<div class="col-sm-12 dealer-hand-wrapper">
+
 				<!-- Dealer total on the left- 3 cols -->
 					<div class="col-sm-3 dealer-total">
 						Dealer total<span class="dealer-total-number">0</span>
+
 					</div>
+
 					<!-- Dealer total on the right- 9 cols -->
 					<div class="col-sm-9 dealer-cards">
-						<div class="col-sm-2 card card-one"></div>
-						<div class="col-sm-2 card card-two"></div>
-						<div class="col-sm-2 card  card-three"></div>
-						<div class="col-sm-2 card  card-four"></div>
-						<div class="col-sm-2 card  card-five"></div>
-						<div class="col-sm-2 card  card-six"></div>
+						<div class="col-sm-2 card card-one"><div class="back"><img class="cardBack" src="images/card-back.jpg"></div><div class="front"></div></div>
+						<div class="col-sm-2 card card-two"><img class="cardBack" src="images/card-back.jpg"></div>
+						<div class="col-sm-2 card card-three"><img class="cardBack" src="images/card-back.jpg"></div>
+						<div class="col-sm-2 card card-four"><img class="cardBack" src="images/card-back.jpg"></div>
+						<div class="col-sm-2 card card-five"><img class="cardBack" src="images/card-back.jpg"></div>
+						<div class="col-sm-2 card card-six"><img class="cardBack" src="images/card-back.jpg"></div>
 					</div>
 				</div>
 			</div>
@@ -51,15 +64,24 @@
 				<div class="col-sm-12 player-hand-wrapper">
 					<div class="col-sm-3 player-total">
 						Player total<span class="player-total-number">0</span>
+						<div class="betting">
+							<div class="player-bank">Bank:   $<span class="money"></span></div>
+							<div>Select bet amount</div>
+							<button class="bet-button bet-5">$5</button>
+							<button class="bet-button bet-10">$10</button>
+							<button class="bet-button bet-50">$50</button>
+							<button class="bet-button bet-100">$100</button>
+							<div class="bet"></div>
+						</div>
 					</div>
 					<!-- Player total on the right- 9 cols -->
 					<div class="col-sm-9 player-cards">
-						<div class="col-sm-2 card  card-one"></div>
-						<div class="col-sm-2 card  card-two"></div>
-						<div class="col-sm-2 card card-three"></div>
-						<div class="col-sm-2 card  card-four"></div>
-						<div class="col-sm-2 card  card-five"></div>
-						<div class="col-sm-2 card  card-six"></div>
+						<div class="col-sm-2 card card-one"><img class="cardBack" src="images/card-back.jpg"></div>
+						<div class="col-sm-2 card card-two"><img class="cardBack" src="images/card-back.jpg"></div>
+						<div class="col-sm-2 card card-three"><img class="cardBack" src="images/card-back.jpg"></div>
+						<div class="col-sm-2 card card-four"><img class="cardBack" src="images/card-back.jpg"></div>
+						<div class="col-sm-2 card card-five"><img class="cardBack" src="images/card-back.jpg"></div>
+						<div class="col-sm-2 card card-six"><img class="cardBack" src="images/card-back.jpg"></div>
 					</div>
 				</div>
 				</div>
@@ -80,8 +102,17 @@
 				</div>
 
 			</div>
+			<div class="reset">
+				<div class="col-sm-4 col-sm-offset-6">
+					<button class="reset-button">New Game</button>
+				</div>
+
+			</div>
 		</div>
-	</div>
+
+	
+
+	</div> <!-- encapsulates table -->
 </div>
 
 

@@ -15,52 +15,118 @@ var theDeck = [];
 var playersHand = [];
 var dealersHand = [];
 var topOfTheDeck = 4;
+var bank = 0;
+var bet = 0;
+var runningBet = 0;
+var cardsDealt = false;
 
 $(document).ready(function(){
 
+
+	setBank();
+		function setBank() {
+			bank = prompt("How much money do you have to bet? (No symbols)");
+			$(".player-bank").html("Bank:   $  " + bank);
+			$(".bet").html("Total bet:   $  " + bet);
+		}
+		
+	// if (cardsDealt === false) {
+		$(".bet-5").click(function(){
+			if (cardsDealt === false) {
+				bank = bank - 5;
+				$(".player-bank").html("Bank:   $  " + bank);
+				bet = bet + 5;
+				$(".bet").html("Total bet:   $  " + bet);
+			}
+		});
+
+		$(".bet-10").click(function(){
+			if (cardsDealt === false) {
+				bank = bank - 10;
+				$(".player-bank").html("Bank:   $  " + bank);
+				bet = bet + 10;
+				$(".bet").html("Total bet:   $  " + bet);
+			}
+		});
+
+		$(".bet-50").click(function(){
+			if (cardsDealt === false) {
+				bank = bank - 50;
+				$(".player-bank").html("Bank:   $  " + bank);
+				bet = bet + 50;
+				$(".bet").html("Total bet:   $  " + bet);
+			}
+		});
+
+		$(".bet-100").click(function(){
+			if (cardsDealt === false) {
+				bank = bank - 100;
+				$(".player-bank").html("Bank:   $  " + bank);
+				bet = bet + 100;
+				$(".bet").html("Total bet:   $  " + bet);
+			}
+		});
+	// }
+
+
 	$(".deal-button").click(function(){
-		clearTable();
+
+		cardsDealt = true;
 		createDeck(); //Run a function that creates an array of 1h - 13c
 		shuffleDeck();
 
 		// Push onto the playersHand array, the new card. Then place it in the DOM
 		playersHand.push(theDeck[0]);
+		setTimeout(function() {
 		placeCard("player", "one", theDeck[0]);
+		}, 500);
 
 		dealersHand.push(theDeck[1]);
+		setTimeout(function() {
 		placeCard("dealer", "one", theDeck[1]);
+		}, 1500);
 
 		playersHand.push(theDeck[2]);
+		setTimeout(function() {
 		placeCard("player", "two", theDeck[2]);
+		}, 2000);
 
 		dealersHand.push(theDeck[3]);
+		setTimeout(function() {
 		placeCard("dealer", "two", theDeck[3]);
+		}, 2500);
 
+		setTimeout(function() {
 		calculateTotal(playersHand, "player");
 		calculateTotal(dealersHand, "dealer");
+		}, 2500);
 	
 	});
 
 	$(".hit-button").click(function(){
-		placeCard("player", "three", theDeck[4]);
-		var slotForNewCard = "";
-		if (playersHand.length === 2) { slotForNewCard = "three"; }
-		else if (playersHand.length === 3) { slotForNewCard = "four"; }
-		else if (playersHand.length === 4) { slotForNewCard = "five"; }
-		else if (playersHand.length === 5) { slotForNewCard = "six"; } //styled for brevity
-		placeCard("player", slotForNewCard, theDeck[topOfTheDeck]);
-		playersHand.push(theDeck[topOfTheDeck]);
-		playerTotal = calculateTotal(playersHand, "player");
-		topOfTheDeck++;
-		if (playerTotal > 21) {
-			checkWin();
-		}
+			
+			var playersTotal = playerTotal = calculateTotal(playersHand, "player");
+		if (playersTotal <= 21) { //will not let you hit again if over 21
+			placeCard("player", "three", theDeck[4]);
+			var slotForNewCard = "";
+			if (playersHand.length === 2) { slotForNewCard = "three"; }
+			else if (playersHand.length === 3) { slotForNewCard = "four"; }
+			else if (playersHand.length === 4) { slotForNewCard = "five"; }
+			else if (playersHand.length === 5) { slotForNewCard = "six"; } //styled for brevity
+			placeCard("player", slotForNewCard, theDeck[topOfTheDeck]);
+			playersHand.push(theDeck[topOfTheDeck]);
+			playerTotal = calculateTotal(playersHand, "player");
+			topOfTheDeck++;
+			if (playerTotal > 21) {
+				checkWin();
+			}
+		}	
 
 	});
 
 	$(".stand-button").click(function(){
 		//Player clicked on stand. Nothing happens to player
-
+		
 		var dealerTotal = calculateTotal(dealersHand, "dealer");
 		while (dealerTotal < 17) {
 			if (dealersHand.length === 2) { slotForNewCard = "three"; }
@@ -75,11 +141,36 @@ $(document).ready(function(){
 		}
 			// Dealer has atleast 17, check to see who won
 			checkWin();
-
-
 	});
 
+	$(".reset-button").click(function(){
+		reset();
+	});
+
+	function reset() {
+		bet = 0;
+		theDeck = [];
+		playersHand = [];
+		dealersHand = [];
+		topOfTheDeck = 4;
+		$(".card").html("<img class='cardBack' src='images/card-back.jpg'>");
+		calculateTotal(playersHand, "player");
+		calculateTotal(dealersHand, "dealer");
+	}	
+
 });
+
+function placeCard(who, where, cardToPlace) {
+	var classSelector = "." + who + "-cards .card-" + where;
+	
+	setTimeout(function() {
+	$(classSelector).html('<img class="playing-card" src="images/' + cardToPlace + '.png">');
+	}, 500);
+	setTimeout(function() {
+	$(classSelector).flip();
+	}, 2000);
+}
+
 function checkWin() {
 	// alert("Game over.");
 	// Get player and dealer totals
@@ -87,52 +178,72 @@ function checkWin() {
 	var dealerTotal = calculateTotal(dealersHand, "dealer");
 	if (playerTotal === 21) {
 		alert("BLACKJACK!!! Player wins!");
+		bank += bet * 2;
+		bet = 0;
+		reset();
 	}
 	else if (dealerTotal === 21) {
 		alert("The house always wins in the end...");
+		bet = 0;
+		reset();
 	}
 	else if (playerTotal > 21) {
 		alert("Sorry, you busted...");
+		bet = 0;
+		reset();
 
 	}
 	else if (dealerTotal > 21) {
 		alert("Dealer busts! Player wins!")
+		bank += bet * 2;
+		$(".player-bank").html("Bank:   $  " + bank);
+		bet = 0;
+		reset();
 		}
 	else {
 		if (playerTotal > dealerTotal) {
 			alert("Player wins!");
-		}
+			bank += bet * 2;
+			$(".player-bank").html("Bank:   $  " + bank);
+			bet = 0;
+			reset();
+			}
 		else if (dealerTotal > playerTotal) {
 			alert("Sorry, dealer wins!");
+			bet = 0;
+			reset();
 		}
 		else {
-			alert("Looks like we have a tie. Try again.")
+			alert("Looks like we have a tie. Try again.");
+			bank += bet;
+			$(".player-bank").html("Bank:   $  " + bank);
+			bet = 0;
+			reset();
 		}
 	}
+	reset();
+
 }
 
 
-function placeCard(who, where, cardToPlace) {
-	var classSelector = "." + who + "-cards .card-" + where;
 
-	$(classSelector).html('<img src="images/' + cardToPlace + '.png">');
-	// $(classSelector).html('<img src="images/ace-hearts.png">');
-
-
-	}
 
 function calculateTotal(hand, whosTurn) {
-	// console.log(hand);
-	// console.log(whosTurn);
+	var hasAce = false; //init ace as false
 	var total = 0;
 	var cardValue = 0;
 	for (var i = 0; i < hand.length; i++) {
 		cardValue = Number(hand[i].slice(0, -1)) //start from the end
-		if (cardValue > 10) {
+		if ((cardValue === 1) && ((total + 11) <= 21)) { //this card is an ace, check if 11 will fit, if not make it 1
+			cardValue = 11;
+			hasAce = true;
+		}
+		else if (cardValue > 10) {
 			cardValue = 10;
 		}
-	// console.log(hand[i]);
-	// console.log(cardValue);
+		else if (((cardValue + total) > 21) && (hasAce)) {
+		total = total - 10;
+		}
 	total += cardValue;
 	}
 
@@ -169,17 +280,38 @@ function shuffleDeck() {
 		
 	}
 }
-function clearTable() {
+$(".reset-button").click(function(){
+		reset();
+});
 
-	var theDeck = [];
+function reset() {
+	cardsDealt = false;
+	bet = 0;
+	theDeck = [];
 	playersHand = [];
 	dealersHand = [];
 	topOfTheDeck = 4;
-	
-	var cardsToClear = document.getElementsByTagName("img");
-	for (var i = 0; i < cardsToClear.length; i++) {
-		cardsToClear[i].remove();
+	$(".bet").html("Total bet:   $  " + bet);
+	var allCards = document.getElementsByClassName("card");
+	for (var i = 0; i < allCards.length; i++ ){
+	$(".card").html("<img class='cardBack' src='images/card-back.jpg'>");
 	}
-	
+	calculateTotal(playersHand, "player");
+	calculateTotal(dealersHand, "dealer");
 }
+		// function resetStack() {
+		// var resetCards = document.getElementsByClassName("playing-card");
+		// for (var x = 0; x < resetCards.length; x++) {
+		// 	resetCards[i].html("img src='images/card-back.jpg'>");
+		// }
+	
+
+
+	
+	// cardsToClear = document.getElementsByClassName("playing-card");
+	// for (var i = 0; i < cardsToClear.length; i++) {
+	// 	cardsToClear[i].remove();
+	// }
+	
+
 
