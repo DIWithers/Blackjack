@@ -14,7 +14,7 @@ body {
 	padding: 30px 0px;
 	height: 650px;
 	width:75%;
-	transform: rotateX(50deg);
+	/* transform: rotateX(50deg); */
 	z-index: 2;
 	position: relative;
 }
